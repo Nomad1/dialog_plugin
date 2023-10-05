@@ -1,0 +1,17 @@
+[config]
+name="Dialog"
+binary="dialog.xcframework"
+
+initialization="register_dialog_types"
+deinitialization="unregister_dialog_types"
+
+[dependencies]
+linked=[]
+embedded=[]
+system=[]
+
+capabilities=[]
+
+files=[]
+
+[plist]

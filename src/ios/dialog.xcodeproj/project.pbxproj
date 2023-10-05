@@ -1,0 +1,307 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		709117812ACDBA1B00F25A34 /* Dialog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7091177E2ACDBA1B00F25A34 /* Dialog.mm */; };
+		709117822ACDBA1B00F25A34 /* dialog_module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7091177F2ACDBA1B00F25A34 /* dialog_module.cpp */; };
+		709117842ACDE41700F25A34 /* dialog.gdip in CopyFiles */ = {isa = PBXBuildFile; fileRef = 709117832ACDE41700F25A34 /* dialog.gdip */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		709400882ACDA8A8006ECCDE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				709117842ACDE41700F25A34 /* dialog.gdip in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		7091177E2ACDBA1B00F25A34 /* Dialog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Dialog.mm; path = src/Dialog.mm; sourceTree = "<group>"; };
+		7091177F2ACDBA1B00F25A34 /* dialog_module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dialog_module.cpp; path = src/dialog_module.cpp; sourceTree = "<group>"; };
+		709117832ACDE41700F25A34 /* dialog.gdip */ = {isa = PBXFileReference; lastKnownFileType = text; name = dialog.gdip; path = src/dialog.gdip; sourceTree = "<group>"; };
+		7094008A2ACDA8A8006ECCDE /* libDialog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDialog.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		70DBC8762ACDA9BC00019984 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		709400872ACDA8A8006ECCDE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		709400812ACDA8A8006ECCDE = {
+			isa = PBXGroup;
+			children = (
+				709117832ACDE41700F25A34 /* dialog.gdip */,
+				7091177F2ACDBA1B00F25A34 /* dialog_module.cpp */,
+				7091177E2ACDBA1B00F25A34 /* Dialog.mm */,
+				70DBC8762ACDA9BC00019984 /* src */,
+				7094008B2ACDA8A8006ECCDE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7094008B2ACDA8A8006ECCDE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7094008A2ACDA8A8006ECCDE /* libDialog.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		709400892ACDA8A8006ECCDE /* Dialog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 709400932ACDA8A8006ECCDE /* Build configuration list for PBXNativeTarget "Dialog" */;
+			buildPhases = (
+				709400862ACDA8A8006ECCDE /* Sources */,
+				709400872ACDA8A8006ECCDE /* Frameworks */,
+				709400882ACDA8A8006ECCDE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dialog;
+			productName = Dialog;
+			productReference = 7094008A2ACDA8A8006ECCDE /* libDialog.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		709400822ACDA8A8006ECCDE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					709400892ACDA8A8006ECCDE = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 709400852ACDA8A8006ECCDE /* Build configuration list for PBXProject "dialog" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 709400812ACDA8A8006ECCDE;
+			productRefGroup = 7094008B2ACDA8A8006ECCDE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				709400892ACDA8A8006ECCDE /* Dialog */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		709400862ACDA8A8006ECCDE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				709117812ACDBA1B00F25A34 /* Dialog.mm in Sources */,
+				709117822ACDBA1B00F25A34 /* dialog_module.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		709400912ACDA8A8006ECCDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = ../../bin/ios/plugins/;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../godot/";
+			};
+			name = Debug;
+		};
+		709400922ACDA8A8006ECCDE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = $(SRCROOT)/bin;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../godot/";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		709400942ACDA8A8006ECCDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				EAGER_LINKING = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYMROOT = "$(SRCROOT)/bin/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../godot",
+					"$(SRCROOT)/../../godot/platform/iphone",
+				);
+			};
+			name = Debug;
+		};
+		709400952ACDA8A8006ECCDE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				EAGER_LINKING = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYMROOT = "$(SRCROOT)/bin/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../godot",
+					"$(SRCROOT)/../../godot/platform/iphone",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		709400852ACDA8A8006ECCDE /* Build configuration list for PBXProject "dialog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				709400912ACDA8A8006ECCDE /* Debug */,
+				709400922ACDA8A8006ECCDE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		709400932ACDA8A8006ECCDE /* Build configuration list for PBXNativeTarget "Dialog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				709400942ACDA8A8006ECCDE /* Debug */,
+				709400952ACDA8A8006ECCDE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 709400822ACDA8A8006ECCDE /* Project object */;
+}
