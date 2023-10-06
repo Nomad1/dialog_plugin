@@ -32,5 +32,6 @@ DerivedData/
 
 ## Godot Plugins
 /godot/
+godot-cpp/
 
 bin/

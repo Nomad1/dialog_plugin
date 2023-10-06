@@ -1,3 +1,7 @@
 [submodule "godot"]
 	path = godot
 	url = https://github.com/godotengine/godot
+[submodule "godot-headers"]
+	path = godot-headers
+	url = https://github.com/godotengine/godot-headers
+	branch = 3.x

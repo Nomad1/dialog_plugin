@@ -1,0 +1,19 @@
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=false
+
+[entry]
+
+X11.64="res://plugins/x11/libdialog.so"
+Windows.64="res://plugins/win64/libdialog.dll"
+OSX.64="res://plugins/osx/libdialog.dylib"
+OSX.arm="res://plugins/osx/libdialog.dylib"
+
+[dependencies]
+
+X11.64=[  ]
+Windows.64=[  ]
+OSX.64=[  ]
