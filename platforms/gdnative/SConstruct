@@ -37,7 +37,7 @@ if env["version"] == "3":
     if "platform" in ARGUMENTS and ARGUMENTS["platform"] == "macos":
         ARGUMENTS["platform"] = "osx"  # compatibility with old osx name
 
-    env = SConscript("godot-cpp-3.x/SConstruct")
+    env = SConscript("../../godot-cpp-3.x/SConstruct")
 
     # Patch base env
     replace_flags(
@@ -100,7 +100,7 @@ if env["version"] == "3":
             # Mark as MSVC build (would have failed to build the library otherwise).
             env["is_msvc"] = True
 else:
-    env = SConscript("godot-cpp/SConstruct").Clone()
+    env = SConscript("../../godot-cpp/SConstruct").Clone()
 
 # Should probably go to upstream godot-cpp.
 # We let SCons build its default ENV as it includes OS-specific things which we don't
@@ -177,7 +177,7 @@ result_name = "{}{}{}".format(env['target_name'], env["suffix"], env["SHLIBSUFFI
 target = os.path.join(result_path, "lib", result_name)
 
 if env["platform"] == "ios":
-    merge_command = "libtool -static -o {} {} {}".format(target, "src/" + result_name, os.path.join("godot-cpp-3.x/bin", env["LIBS"]))
+    merge_command = "libtool -static -o {} {} {}".format(target, "src/" + result_name, os.path.join("../../godot-cpp-3.x/bin", env["LIBS"]))
     lib = env.StaticLibrary(target="src/" + result_name, source=sources)
     Default(lib)
     library = env.Command(target, ["src/" + result_name], merge_command)

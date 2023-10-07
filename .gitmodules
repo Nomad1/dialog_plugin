@@ -1,3 +1,10 @@
 [submodule "godot"]
 	path = godot
 	url = https://github.com/godotengine/godot
+[submodule "godot-cpp"]
+	path = godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+[submodule "godot-cpp-3.x"]
+	path = godot-cpp-3.x
+	url = https://github.com/godotengine/godot-cpp
+	branch = 3.x
