@@ -87,8 +87,6 @@ void Dialog::handle_result(int id, int index) {
 }
 
 void Dialog::_register_methods() {
-    Godot::print("Got _register_methods call");
-
     register_method("show", &Dialog::show);
     register_method("hide", &Dialog::hide);
     

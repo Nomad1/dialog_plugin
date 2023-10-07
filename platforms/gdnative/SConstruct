@@ -156,11 +156,12 @@ Default(targets)
 
 # Our includes and sources
 env.Append(CPPPATH=["src/"])
-env.Append(CPPDEFINES=["RTC_STATIC"])
 sources = []
 
 if env["platform"] == "ios":
     sources.append(["src/Dialog_ios.mm"])
+elif env["platform"] == "macos" or env["platform"] == "osx":
+    sources.append(["src/Dialog_macos.mm"])
 else:
     sources.append(["src/Dialog.cpp"])
 
@@ -173,11 +174,15 @@ else:
 
 # Make the shared library
 result_name = "{}{}{}".format(env['target_name'], env["suffix"], env["SHLIBSUFFIX"])
+target = os.path.join(result_path, "lib", result_name)
 
 if env["platform"] == "ios":
-    library = env.StaticLibrary(target=os.path.join(result_path, "lib", result_name), source=sources)
+    merge_command = "libtool -static -o {} {} {}".format(target, result_name, os.path.join("godot-cpp-3.x/bin", env["LIBS"]))
+    lib = env.StaticLibrary(target=result_name, source=sources)
+    Default(lib)
+    library = env.Command(target, [result_name], merge_command)
 else:
-    library = env.SharedLibrary(target=os.path.join(result_path, "lib", result_name), source=sources)
+    library = env.SharedLibrary(target=target, source=sources)
 
 Default(library)
 

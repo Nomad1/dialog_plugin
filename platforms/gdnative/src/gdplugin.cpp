@@ -6,8 +6,6 @@
 //  https://github.com/godotengine/godot-ios-plugins/
 //
 
-#include "gdplugin.h"
-
 #include "Dialog.h"
 
 #if VERSION_MAJOR == 4

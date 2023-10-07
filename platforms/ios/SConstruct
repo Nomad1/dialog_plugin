@@ -161,9 +161,7 @@ else:
     ])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-sources = Glob('src/*.cpp')
-sources.append(Glob('src/*.mm'))
-sources.append(Glob('src/*.m'))
+sources = [ 'src/gdplugin.cpp', 'src/Dialog_ios.mm' ]
 
 # lib<plugin>.<arch>-<simulator|ios>.<release|debug|release_debug>.a
 library_platform = env["arch"] + "-" + ("simulator" if env["simulator"] else "ios")
