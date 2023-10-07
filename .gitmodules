@@ -6,3 +6,11 @@
 	path = godot-cpp-3.x
 	url = https://github.com/godotengine/godot-cpp
 	branch = 3.x
+[submodule "godot-3.x"]
+	path = godot-3.x
+	url = https://github.com/godotengine/godot
+	branch = 3.x
+[submodule "godot"]
+	path = godot
+	url = https://github.com/godotengine/godot
+	branch = master
