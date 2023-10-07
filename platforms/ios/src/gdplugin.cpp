@@ -1,22 +1,20 @@
 //
-//  dialog_module.cpp
+//  gdplugin.cpp
 //  Dialog Godot plugin
 //
 //  Devived from in_app_store_module.cpp on 04.10.2023.
 //  https://github.com/godotengine/godot-ios-plugins/
 //
 
-#include "dialog_module.h"
+#include "gdplugin.h"
 
-#include "core/version.h"
+#include "Dialog.h"
 
 #if VERSION_MAJOR == 4
 #include "core/config/engine.h"
 #else
 #include "core/engine.h"
 #endif
-
-#include "Dialog.h"
 
 void register_dialog_types() {
     Dialog * dialog = memnew(Dialog);

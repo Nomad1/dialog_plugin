@@ -17,3 +17,4 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void *handle) {
 
 	Godot::print("Registering class Dialog");
 	godot::register_class<Dialog>();
+}

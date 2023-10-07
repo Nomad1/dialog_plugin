@@ -1,107 +1,169 @@
 #!python
-import os, subprocess
 
-opts = Variables([], ARGUMENTS)
+import os, sys, platform, json, subprocess
+import SCons
 
-# Gets the standard flags CC, CCX, etc.
-env = DefaultEnvironment()
+def replace_flags(flags, replaces):
+    for k, v in replaces.items():
+        if k in flags:
+            flags[flags.index(k)] = v
 
-# Define our options
-opts.Add(EnumVariable('target', "Compilation target", 'debug', ['d', 'debug', 'r', 'release']))
-opts.Add(EnumVariable('platform', "Compilation platform", '', ['', 'windows', 'x11', 'linux', 'osx']))
-opts.Add(EnumVariable('p', "Compilation target, alias for 'platform'", '', ['', 'windows', 'x11', 'linux', 'osx']))
-opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
-opts.Add(PathVariable('target_path', 'The path where the lib is installed.', '../../bin/plugins/'))
+
+env = Environment()
+opts = Variables(["customs.py"], ARGUMENTS)
+opts.Add(EnumVariable("version", "The Godot target version", "3", ["3", "4"]))
+opts.Add(PathVariable('target_path', 'The path where the lib is installed.', '../../bin/'))
 opts.Add(PathVariable('target_name', 'The library name.', 'libdialog', PathVariable.PathAccept))
-
-
-# Local dependency paths, adapt them to your setup
-godot_headers_path = "godot-cpp/godot-headers/"
-cpp_bindings_path = "godot-cpp/"
-cpp_library = "libgodot-cpp"
+opts.Update(env)
 
 files_to_copy = ["dialog.gdnlib", "dialog.gdns"]
 
-# only support 64 at this time..
-bits = 64
 
-# Updates the environment with the option variables.
+# Minimum target platform versions.
+if "ios_min_version" not in ARGUMENTS:
+    ARGUMENTS["ios_min_version"] = "11.0"
+if "macos_deployment_target" not in ARGUMENTS:
+    ARGUMENTS["macos_deployment_target"] = "11.0"
+if "android_api_level" not in ARGUMENTS:
+    ARGUMENTS["android_api_level"] = "28"
+
+if env["version"] == "3":
+    if "platform" in ARGUMENTS and ARGUMENTS["platform"] == "macos":
+        ARGUMENTS["platform"] = "osx"  # compatibility with old osx name
+
+    env = SConscript("godot-cpp-3.x/SConstruct")
+
+    # Patch base env
+    replace_flags(
+        env["CCFLAGS"],
+        {
+            "-mios-simulator-version-min=10.0": "-mios-simulator-version-min=11.0",
+            "-miphoneos-version-min=10.0": "-miphoneos-version-min=11.0",
+            "/std:c++14": "/std:c++17",
+            "-std=c++14": "-std=c++17",
+        },
+    )
+
+    env = env.Clone()
+
+    if env["target"] == "debug":
+        env.Append(CPPDEFINES=["DEBUG_ENABLED"])
+
+    if env["platform"] == "windows" and env["use_mingw"]:
+        env.Append(LINKFLAGS=["-static-libgcc"])
+
+    if env["platform"] == "osx":
+        env["platform"] = "macos"  # compatibility with old osx name
+        ARGUMENTS["platform"] = "macos"
+        env["CC"] = "clang"  # CC is not set in 3.x and can result in it being "gcc".
+
+    if env["platform"] == "ios":
+        env["ios_min_version"] = "11.0"
+
+    # Normalize suffix
+    if env["platform"] in ["windows", "linux"]:
+        env["arch"] = "x86_32" if env["bits"] == "32" else "x86_64"
+        env["arch_suffix"] = env["arch"]
+    elif env["platform"] == "macos":
+        env["arch"] = env["macos_arch"]
+        env["arch_suffix"] = env["arch"]
+    elif env["platform"] == "ios":
+        env["arch"] = "arm32" if env["ios_arch"] == "armv7" else env["ios_arch"]
+        env["arch_suffix"] = env["ios_arch"] + (".simulator" if env["ios_simulator"] else "")
+    elif env["platform"] == "android":
+        env["arch"] = {
+            "armv7": "arm32",
+            "arm64v8": "arm64",
+            "x86": "x86_32",
+            "x86_64": "x86_64",
+        }[env["android_arch"]]
+        env["arch_suffix"] = env["arch"]
+
+    target_compat = "template_" + env["target"]
+    env["suffix"] = ".{}.{}.{}".format(env["platform"], target_compat, env["arch_suffix"])
+    env["debug_symbols"] = False
+
+    # Some windows specific hacks.
+    if env["platform"] == "windows":
+        if sys.platform not in ["win32", "msys"]:
+            # Set missing CC for MinGW from upstream build module.
+            if env["bits"] == "64":
+                env["CC"] = "x86_64-w64-mingw32-gcc"
+            elif env["bits"] == "32":
+                env["CC"] = "i686-w64-mingw32-gcc"
+        elif not env["use_mingw"]:
+            # Mark as MSVC build (would have failed to build the library otherwise).
+            env["is_msvc"] = True
+else:
+    env = SConscript("godot-cpp/SConstruct").Clone()
+
+# Should probably go to upstream godot-cpp.
+# We let SCons build its default ENV as it includes OS-specific things which we don't
+# want to have to pull in manually.
+# Then we prepend PATH to make it take precedence, while preserving SCons' own entries.
+env.PrependENVPath("PATH", os.getenv("PATH"))
+env.PrependENVPath("PKG_CONFIG_PATH", os.getenv("PKG_CONFIG_PATH"))
+if "TERM" in os.environ:  # Used for colored output.
+    env["ENV"]["TERM"] = os.environ["TERM"]
+
+# Patch mingw SHLIBSUFFIX.
+if env["platform"] == "windows" and env["use_mingw"]:
+    env["SHLIBSUFFIX"] = ".dll"
+
+# Patch OSXCross config.
+if env["platform"] == "macos" and os.environ.get("OSXCROSS_ROOT", ""):
+    env["SHLIBSUFFIX"] = ".dylib"
+    if env["macos_deployment_target"] != "default":
+        env["ENV"]["MACOSX_DEPLOYMENT_TARGET"] = env["macos_deployment_target"]
+
+# Patch linux flags to statically link libgcc and libstdc++
+if env["platform"] == "linux":
+    env.Append(
+        LINKFLAGS=[
+            "-Wl,--no-undefined",
+            "-static-libgcc",
+            "-static-libstdc++",
+        ]
+    )
+    # And add some linux dependencies.
+    env.Append(LIBS=["pthread", "dl"])
+
 opts.Update(env)
 
-# Process some arguments
-if env['use_llvm']:
-    env['CC'] = 'clang'
-    env['CXX'] = 'clang++'
-
-if env['p'] != '':
-    env['platform'] = env['p']
-
-if env['platform'] == '':
-    print("No valid target platform selected.")
-    quit();
-
-plugins_path = env['target_path']
-
-# Check our platform specifics
-if env['platform'] == "osx":
-    env['target_path'] += 'osx/'
-    cpp_library += '.osx'
-    if env['target'] in ('debug', 'd'):
-        env.Append(CCFLAGS = ['-g','-O2', '-arch', 'arm64', '-std=c++17'])
-        env.Append(LINKFLAGS = ['-arch', 'arm64'])
-    else:
-        env.Append(CCFLAGS = ['-g','-O3', '-arch', 'arm64', '-std=c++17'])
-        env.Append(LINKFLAGS = ['-arch', 'arm64'])
-
-elif env['platform'] in ('x11', 'linux'):
-    env['target_path'] += 'x11/'
-    cpp_library += '.linux'
-    if env['target'] in ('debug', 'd'):
-        env.Append(CCFLAGS = ['-fPIC', '-g3','-Og', '-std=c++17'])
-    else:
-        env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++17'])
-
-elif env['platform'] == "windows":
-    env['target_path'] += 'win64/'
-    cpp_library += '.windows'
-    # This makes sure to keep the session environment variables on windows,
-    # that way you can run scons in a vs 2017 prompt and it will find all the required tools
-    env.Append(ENV = os.environ)
-
-    env.Append(CCFLAGS = ['-DWIN32', '-D_WIN32', '-D_WINDOWS', '-W3', '-GR', '-D_CRT_SECURE_NO_WARNINGS'])
-    if env['target'] in ('debug', 'd'):
-        env.Append(CCFLAGS = ['-EHsc', '-D_DEBUG', '-MDd'])
-    else:
-        env.Append(CCFLAGS = ['-O2', '-EHsc', '-DNDEBUG', '-MD'])
-
-if env['target'] in ('debug', 'd'):
-    cpp_library += '.debug'
+target = env["target"]
+if env["version"] == "3":
+    result_path = os.path.join(env['target_path'], "plugins")
 else:
-    cpp_library += '.release'
+    result_path = os.path.join(env['target_path'], "extensions")
 
-cpp_library += '.' + str(bits)
-
-# make sure our binding library is properly includes
-env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
-env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
-env.Append(LIBS=[cpp_library])
-
-# tweak this if you want to use different folders, or more folders, to store your source code in.
-env.Append(CPPPATH=['src/'])
-sources = Glob('src/*.cpp')
-
-library = env.SharedLibrary(target=env['target_path'] + env['target_name'] , source=sources)
-
-Default(library)
+result_path = os.path.join(result_path, "dialog")
 
 targets = []
 
 for f in files_to_copy:
-    cmd = env.Command(target=plugins_path + f, source='src/' + f, action=Copy('$TARGET', '$SOURCE'))
+    cmd = env.Command(target=os.path.join(result_path, f), source='src/' + f, action=Copy('$TARGET', '$SOURCE'))
     targets.append(cmd)
 
 Default(targets)
 
-# Generates help for the -h scons option.
-Help(opts.GenerateHelpText(env))
+# Our includes and sources
+env.Append(CPPPATH=["src/"])
+env.Append(CPPDEFINES=["RTC_STATIC"])
+sources = []
+sources.append(
+    [
+        "src/Dialog.cpp",
+    ]
+)
+if env["version"] == "3":
+    env.Append(CPPDEFINES=["GDNATIVE"])
+    sources.append("src/gdnative.cpp")
+else:
+    env.Append(CPPDEFINES=["GDEXTENSION"])
+    sources.append("src/gdextension.cpp")
+
+# Make the shared library
+result_name = "{}{}{}".format(env['target_name'], env["suffix"], env["SHLIBSUFFIX"])
+library = env.SharedLibrary(target=os.path.join(result_path, "lib", result_name), source=sources)
+Default(library)
 

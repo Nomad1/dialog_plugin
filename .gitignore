@@ -29,9 +29,11 @@ DerivedData/
 *.d
 *.o
 *.dblite
+*.os
 
 ## Godot Plugins
 /godot/
 godot-cpp/
+godot-cpp-3.x/
 
 bin/
