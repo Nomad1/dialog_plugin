@@ -177,10 +177,10 @@ result_name = "{}{}{}".format(env['target_name'], env["suffix"], env["SHLIBSUFFI
 target = os.path.join(result_path, "lib", result_name)
 
 if env["platform"] == "ios":
-    merge_command = "libtool -static -o {} {} {}".format(target, result_name, os.path.join("godot-cpp-3.x/bin", env["LIBS"]))
-    lib = env.StaticLibrary(target=result_name, source=sources)
+    merge_command = "libtool -static -o {} {} {}".format(target, "src/" + result_name, os.path.join("godot-cpp-3.x/bin", env["LIBS"]))
+    lib = env.StaticLibrary(target="src/" + result_name, source=sources)
     Default(lib)
-    library = env.Command(target, [result_name], merge_command)
+    library = env.Command(target, ["src/" + result_name], merge_command)
 else:
     library = env.SharedLibrary(target=target, source=sources)
 

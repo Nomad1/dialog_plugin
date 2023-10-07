@@ -28,6 +28,7 @@ DerivedData/
 
 *.d
 *.o
+*.a
 *.dblite
 *.os
 
