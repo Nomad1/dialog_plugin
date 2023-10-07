@@ -11,14 +11,13 @@ for lib in $GODOT_PLUGINS; do
 done
 
 # Move to release folder
-IOS_FOLDER="../../bin/ios/plugins"
+IOS_FOLDER="../../bin/ios/plugins/"
 
 rm -rf $IOS_FOLDER
 mkdir $IOS_FOLDER
 
 # Move Plugin
 for lib in $GODOT_PLUGINS; do
-    mkdir $IOS_FOLDER/${lib}
-    mv ./bin/${lib}.{release,debug}.xcframework $IOS_FOLDER/${lib}
-    cp ./src/${lib}.gdip $IOS_FOLDER/${lib}
+    mv ./bin/${lib}.{release,debug}.xcframework $IOS_FOLDER
+    cp ./src/${lib}.gdip $IOS_FOLDER
 done

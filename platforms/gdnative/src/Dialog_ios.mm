@@ -17,10 +17,6 @@ NSString * ToNSString(String str) {
     return [[NSString alloc] initWithUTF8String:str.utf8().get_data()];
 }
 
-void handle_result(int id, int index) {
-    Dialog::get_singleton()->handle_result(id, index);
-}
-
 int Dialog::show(String title, String message, Array buttons)
 {
     const int id = ++dialog_index;
@@ -35,7 +31,7 @@ int Dialog::show(String title, String message, Array buttons)
     alert.view.tag = id;
     
     if (!buttons.size()) {
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) { handle_result(id, 0); }];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) { this->handle_result(id, 0); }];
         [alert addAction:defaultAction];
     } else
     {
@@ -45,7 +41,7 @@ int Dialog::show(String title, String message, Array buttons)
             
             const int number = i;
             
-            UIAlertAction* action = [UIAlertAction actionWithTitle:strButton style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) { handle_result(id, number); }];
+            UIAlertAction* action = [UIAlertAction actionWithTitle:strButton style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) { this->handle_result(id, number); }];
             
             [alert addAction:action];
         }
@@ -85,12 +81,24 @@ void Dialog::handle_result(int id, int index) {
     emit_signal("dialog_closed", id, index);
 }
 
+#ifdef GDNATIVE
+void Dialog::_init() {
+}
+
+void Dialog::_register_methods() {
+    register_method("show", &Dialog::show);
+    register_method("hide", &Dialog::hide);
+    
+    register_signal<Dialog>("dialog_closed", "index", GODOT_VARIANT_TYPE_INT);
+}
+#else
 void Dialog::_bind_methods() {
     ClassDB::bind_method(D_METHOD("show"), &Dialog::show);
     ClassDB::bind_method(D_METHOD("hide"), &Dialog::hide);
     
     ADD_SIGNAL(MethodInfo("dialog_closed", PropertyInfo(Variant::INT, "index")));
 }
+#endif
 
 Dialog *Dialog::get_singleton() {
     return instance;
@@ -98,18 +106,11 @@ Dialog *Dialog::get_singleton() {
 
 Dialog::Dialog() {
     ERR_FAIL_COND(instance != NULL);
+
     instance = this;
-    
-    //    products_request_delegate = [[GodotProductsDelegate alloc] init];
-    //  transactions_observer = [[GodotTransactionsObserver alloc] init];
 }
 
 
 Dialog::~Dialog() {
-    //[products_request_delegate reset];
-    //[transactions_observer reset];
-    
-    //    products_request_delegate = nil;
-    //  [[SKPaymentQueue defaultQueue] removeTransactionObserver:transactions_observer];
-    //transactions_observer = nil;
+    instance = NULL;
 }

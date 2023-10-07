@@ -7,11 +7,11 @@ reloadable=false
 
 [entry]
 
-OSX.64="res://plugins/dialog/lib/libdialog.macos.template_debug.universal.dylib"
-OSX.arm="res://plugins/dialog/lib/libdialog.macos.template_debug.universal.dylib"
+OSX.64="res://plugins/dialog/lib/libdialog.macos.debug.universal.dylib"
+OSX.arm="res://plugins/dialog/lib/libdialog.macos.debug.universal.dylib"
 Windows.64="res://plugins/win64/libdialog.dll"
 X11.64="res://plugins/x11/libdialog.so"
-iOS.arm64="res://plugins/dialog/lib/libdialog.ios.template_debug.arm64.dylib"
+iOS.arm64="res://plugins/dialog/lib/libdialog.ios.debug.arm64.a"
 
 [dependencies]
 
