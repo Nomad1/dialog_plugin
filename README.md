@@ -4,7 +4,7 @@ Multi-platform plugin for System Dialog in Godot 3 and 4
 This project aims to show system dialogs with customizable buttons on different platforms including mobiles.
 
 # Notes
-At the moment only iOS and macOS versions are working and only for Godot 3.x using GDNative. iOS plugin can be compiled both as GDNative module and as iOS plugin. GDNative requires sub-module godot-cpp (3.x branch) and iOS Plugin requires godot headers or source code in godot submodule.
+At the moment only iOS and macOS versions are implemented and all others are using OS.alert() instead. iOS plugin can be compiled both as GDNative module and as iOS plugin. GDNative requires sub-module godot-cpp (3.x branch) and iOS Plugin requires godot headers or source code in godot submodule.
 You can also download godot-headers here: https://github.com/godotengine/godot-ios-plugins/releases
 
 To build 3.x branch you need to recursively download godot-cpp branch 3.x to folder godot-cpp-3.x. It should be done automatically when you download the repository with submodules
@@ -20,8 +20,8 @@ To build 3.x branch you need to recursively download godot-cpp branch 3.x to fol
 
 Legend:
 - `+` full support (can be compiled and proven used in the engine)
-- `*` compiles but has not yet been tested.
-- `-` could technically be compiled with code stubs but won't work
+- `*` implemented but has not been tested yet
+- `-` could be compiled with code stubs (calling OS.alert()) but not implemented directly
 
 # Build
 Use scons to build each platform independently. I.e. you can change to `platforms/gdnative` and type

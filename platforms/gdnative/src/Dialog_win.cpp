@@ -6,15 +6,8 @@
 //
 
 #include "Dialog.h"
-
-#ifdef GDNATIVE
-#include <OS.hpp>
-#define print Godot::print
-#else
-#include <godot_cpp/classes/os.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
-#define print UtilityFunctions::print
-#endif
+#include <Windows.h>
+#include <thread>
 
 Dialog *Dialog::instance = NULL;
 int Dialog::dialog_index = 0;
@@ -24,13 +17,45 @@ void handle_result(int id, int index) {
     Dialog::get_singleton()->handle_result(id, index);
 }
 
+void ShowMessageBoxAsync() {
+    MessageBoxW(NULL, L"Async Message Box", L"Title", MB_OK);
+}
+
 int Dialog::show(godot::String title, godot::String message, godot::Array buttons)
 {
-    const int id = ++dialog_index;
+    /* Windows support only a few predefined buttons:
+    MB_ABORTRETRYIGNORE : Abort, Retry, and Ignore
+    MB_CANCELTRYCONTINUE : Cancel, Try Again, Continue
+    MB_OK : Ok
+    MB_OKCANCEL : Ok, Cancel
+    MB_RETRYCANCEL : Retry, Cancel
+    MB_YESNO : Yes, No
+    MB_YESNOCANCEL : Yes, No, Cancel*/
 
-    print("Showing dialog ", title, ", message ", title);
+    int buttonCode = 0; // ok
 
-    OS::get_singleton()->alert(title, message);
+    switch (buttons.size())
+    {
+        default:
+            buttonCode = MB_OK;
+            break;
+        case 2:
+            if (buttons[0] == "Yes" || buttons[1] == "Yes")
+                buttonCode = MB_YESNO;
+            else
+                buttonCode = MB_OKCANCEL;
+            break;
+        case 3:
+            buttonCode = MB_YESNOCANCEL;
+            break;
+    }
+
+    Godot::print("Showing dialog ", title, ", message ", title, " buttons ", buttonCode);
+
+    std::thread(ShowMessageBoxAsync).detach();
+
+    return 0;
+
     
 /*    NSString *strTitle = ToNSString(title);
     NSString *strMessage = ToNSString(message);
@@ -89,13 +114,16 @@ void Dialog::hide(int id) {
     }*/
 }
 
+void Dialog::_init() {
+    Godot::print("Got _init call");
+}
+
 void Dialog::handle_result(int id, int index) {
   //  emit_signal("dialog_closed", id, index);
 }
 
 #ifdef GDNATIVE
 void Dialog::_init() {
-    print("Got _init call");
 }
 
 void Dialog::_register_methods() {
@@ -114,7 +142,7 @@ void Dialog::_bind_methods() {
 #endif
 
 Dialog *Dialog::get_singleton() {
-    print("Got get_singleton call");
+    Godot::print("Got get_singleton call");
 
     return instance;
 }
