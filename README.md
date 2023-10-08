@@ -12,23 +12,38 @@ To build 3.x branch you need to recursively download godot-cpp branch 3.x to fol
 ## OS support
 | OS | Plugin | GDNative (3.x) | GDExtension (4.x) |
 |-|-|-|-|
-|iOS| + | + | - |
-|Android| - | - | - |
-|macOS|  | + | - |
-|Windows| | - | - |
-|Linux| | - | - |
+|iOS| `+` | `+` | `*` |
+|Android| `-` | `-` | `-` |
+|macOS| | `+` | `*` |
+|Windows| | `-` | `-` |
+|Linux| | `-` | `-` |
+
+Legend:
+- `+` full support (can be compiled and proven used in the engine)
+- `*` compiles but has not yet been tested.
+- `-` could technically be compiled with code stubs but won't work
 
 # Build
 Use scons to build each platform independently. I.e. you can change to `platforms/gdnative` and type
 
 ```scons platform=macos target=debug version=3.x```
+or
+```scons platform=macos target=debug version=4.x```
 
 For plugins there are build scripts taken from https://github.com/godotengine/godot-ios-plugins
 
-```scripts/release_xcframework.sh 3.x```
+```sh
+scripts/generate_headers.sh 3.x
+scripts/release_xcframework.sh 3.x
+```
+or
+```sh
+scripts/generate_headers.sh 4.x
+scripts/release_xcframework.sh 4.x
+```
 
 # Distribution
-Compiled plugins are placed in the bin/ directory. For GDNative it's `bin/plugins`, for GDExtension it's `bin/extensions`, for mobiles it's `bin/ios` and `bin/android` correspondingly.
+Compiled plugins are placed in the bin/3.x or bin/4.x directory. For GDNative the folder name is `bin/<version>/plugins`, for GDExtension it's `bin/<version>/extensions`, for mobiles it's `bin/<version>/ios` and `bin/<version>/android` correspondingly.
 
 # Usage
 Mobile plugins provide global `Dialog` singleton that could be used as is in GDScript and with a call to `Godot.Engine.GetSingleton("Dialog")` in C#. GDNative and GDExtension plugins require loading a NativeScript resource:
