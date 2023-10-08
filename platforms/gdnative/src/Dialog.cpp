@@ -86,12 +86,24 @@ void Dialog::handle_result(int id, int index) {
   //  emit_signal("dialog_closed", id, index);
 }
 
+#ifdef GDNATIVE
+void Dialog::_init() {
+}
+
 void Dialog::_register_methods() {
     register_method("show", &Dialog::show);
     register_method("hide", &Dialog::hide);
     
     register_signal<Dialog>("dialog_closed", "index", GODOT_VARIANT_TYPE_INT);
 }
+#else
+void Dialog::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("show"), &Dialog::show);
+    ClassDB::bind_method(D_METHOD("hide"), &Dialog::hide);
+    
+    ADD_SIGNAL(MethodInfo("dialog_closed", PropertyInfo(Variant::INT, "index")));
+}
+#endif
 
 Dialog *Dialog::get_singleton() {
     Godot::print("Got get_singleton call");

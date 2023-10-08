@@ -150,8 +150,8 @@ else:
 if env['version'] == '3.x':
     env.Append(CPPPATH=[
         './src', 
-        '../../godot', 
-        '../../godot/platform/iphone',
+        '../../godot-3.x', 
+        '../../godot-3.x/platform/iphone',
     ])
 else:
        env.Append(CPPPATH=[

@@ -11,14 +11,22 @@
 #ifdef GDNATIVE
   #include <Godot.hpp>
   using namespace godot;
-  #define GDCLASS GODOT_CLASS
-#else
+#elif defined(GDEXTENSION)
+  #include <godot_cpp/classes/object.hpp>
+  #include <godot_cpp/core/class_db.hpp>
+
+  using namespace godot;
+#else // plugin
   #include "core/version.h"
   #if VERSION_MAJOR == 4
     #include "core/object/class_db.h"
   #else
     #include "core/object.h"
   #endif
+#endif
+
+#if !defined(GDCLASS)
+  #define GDCLASS(arg1, arg2) GODOT_CLASS(arg1, arg2)
 #endif
 
 class Dialog : public Object

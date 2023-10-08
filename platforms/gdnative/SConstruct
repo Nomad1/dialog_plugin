@@ -11,17 +11,11 @@ def replace_flags(flags, replaces):
 
 env = Environment()
 opts = Variables(["customs.py"], ARGUMENTS)
-opts.Add(EnumVariable("version", "The Godot target version", "3", ["3", "4", "3.x", "4.x"]))
+opts.Add(EnumVariable("version", "The Godot target version", "3.x", ["3.x", "4.x"]))
 opts.Add(PathVariable('target_path', 'The path where the lib is installed.', '../../bin/'))
 opts.Add(PathVariable('target_name', 'The library name.', 'libdialog', PathVariable.PathAccept))
 
 files_to_copy = ["dialog.gdnlib", "dialog.gdns"]
-
-if ARGUMENTS["version"] == "3.x":
-    ARGUMENTS["version"] = "3"
-
-if ARGUMENTS["version"] == "4.x":
-    ARGUMENTS["version"] = "4"
 
 # Minimum target platform versions.
 if "ios_min_version" not in ARGUMENTS:
@@ -31,9 +25,15 @@ if "macos_deployment_target" not in ARGUMENTS:
 if "android_api_level" not in ARGUMENTS:
     ARGUMENTS["android_api_level"] = "28"
 
+if ARGUMENTS["version"] == "4.x":
+    if ARGUMENTS["target"] == "debug":
+        ARGUMENTS["target"] = "template_debug"
+    if ARGUMENTS["target"] == "release":
+        ARGUMENTS["target"] = "template_release"
+
 opts.Update(env)
 
-if env["version"] == "3":
+if env["version"] == "3.x":
     if "platform" in ARGUMENTS and ARGUMENTS["platform"] == "macos":
         ARGUMENTS["platform"] = "osx"  # compatibility with old osx name
 
@@ -139,10 +139,10 @@ if env["platform"] == "ios":
 opts.Update(env)
 
 target = env["target"]
-if env["version"] == "3":
-    result_path = os.path.join(env['target_path'], "plugins")
+if env["version"] == "3.x":
+    result_path = os.path.join(env['target_path'], env["version"], "plugins")
 else:
-    result_path = os.path.join(env['target_path'], "extensions")
+    result_path = os.path.join(env['target_path'], env["version"], "extensions")
 
 result_path = os.path.join(result_path, "dialog")
 
@@ -165,19 +165,22 @@ elif env["platform"] == "macos" or env["platform"] == "osx":
 else:
     sources.append(["src/Dialog.cpp"])
 
-if env["version"] == "3":
+godot_cpp_bin = ""
+if env["version"] == "3.x":
     env.Append(CPPDEFINES=["GDNATIVE"])
     sources.append("src/gdnative.cpp")
+    godot_cpp_bin = "../../godot-cpp-3.x/bin"
 else:
     env.Append(CPPDEFINES=["GDEXTENSION"])
     sources.append("src/gdextension.cpp")
+    godot_cpp_bin = "../../godot-cpp/bin"
 
 # Make the shared library
 result_name = "{}{}{}".format(env['target_name'], env["suffix"], env["SHLIBSUFFIX"])
 target = os.path.join(result_path, "lib", result_name)
 
 if env["platform"] == "ios":
-    merge_command = "libtool -static -o {} {} {}".format(target, "src/" + result_name, os.path.join("../../godot-cpp-3.x/bin", env["LIBS"]))
+    merge_command = "libtool -static -o {} {} {}".format(target, "src/" + result_name, os.path.join(godot_cpp_bin, str(env["LIBS"][0])))
     lib = env.StaticLibrary(target="src/" + result_name, source=sources)
     Default(lib)
     library = env.Command(target, ["src/" + result_name], merge_command)

@@ -37,4 +37,4 @@ DerivedData/
 godot-cpp/
 godot-cpp-3.x/
 
-bin/
+/bin/
