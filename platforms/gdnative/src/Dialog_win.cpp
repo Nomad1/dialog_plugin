@@ -6,8 +6,10 @@
 //
 
 #include "Dialog.h"
+
 #include <Windows.h>
-#include <thread>
+
+#include <Thread.hpp>
 
 Dialog *Dialog::instance = NULL;
 int Dialog::dialog_index = 0;

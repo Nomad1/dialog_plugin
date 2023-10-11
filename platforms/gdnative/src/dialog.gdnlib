@@ -7,6 +7,7 @@ reloadable=false
 
 [entry]
 
+Android.arm64-v8a="res://plugins/dialog/lib/libdialog.android.debug.arm64.so"
 OSX.64="res://plugins/dialog/lib/libdialog.macos.debug.universal.dylib"
 Windows.64="res://plugins/win64/libdialog.dll"
 X11.64="res://plugins/x11/libdialog.so"
@@ -14,6 +15,7 @@ iOS.arm64="res://plugins/dialog/lib/libdialog.ios.debug.arm64.a"
 
 [dependencies]
 
+Android.arm64-v8a=[  ]
 OSX.64=[  ]
 Windows.64=[  ]
 X11.64=[  ]

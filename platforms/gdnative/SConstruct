@@ -58,6 +58,9 @@ if env["version"] == "3.x":
     if env["platform"] == "windows" and env["use_mingw"]:
         env.Append(LINKFLAGS=["-static-libgcc"])
 
+    if env["platform"] == "android":
+        env.Append(LINKFLAGS=["-shared"])
+
     if env["platform"] == "osx":
         env["platform"] = "macos"  # compatibility with old osx name
         ARGUMENTS["platform"] = "macos"
@@ -162,6 +165,8 @@ if env["platform"] == "ios":
     sources.append(["src/Dialog_ios.mm"])
 elif env["platform"] == "macos" or env["platform"] == "osx":
     sources.append(["src/Dialog_macos.mm"])
+elif env["platform"] == "android":
+    sources.append(["src/Dialog_android.cpp"])
 else:
     sources.append(["src/Dialog.cpp"])
 

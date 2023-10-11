@@ -38,9 +38,15 @@ class Dialog : public Object
 
 public: // exported
     int show(String title, String message, Array buttons);
+    void do_show(); // should be called from UI thread
     
     void hide(int id);
 public: // for internal use
+    String lastTitle;
+    String lastMessage;
+    Array lastButtons;
+    int lastId;
+
     void handle_result(int id, int index);
 
     Dialog();
